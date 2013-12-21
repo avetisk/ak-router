@@ -4,7 +4,7 @@
 
 var Router = require('../');
 var assert = require('assert');
-var originalBaseUrl = window.location.origin + window.location.pathname;
+var originalBaseUrl = window.location.origin + window.location.pathname.replace(/\/$/, '');
 
 describe('Router', function () {
   beforeEach(function () {
@@ -12,7 +12,7 @@ describe('Router', function () {
   });
 
   it('#push()', function (done) {
-    var baseUrl = window.location.origin + window.location.pathname;
+    var baseUrl = window.location.origin + window.location.pathname.replace(/\/$/, '');
     var router = new Router();
 
     router.push('/govinda');
@@ -163,5 +163,35 @@ describe('Router', function () {
     router.route('/govinda/bol');
     router.route('/hari');
     router.route('/hari', false);
+  });
+
+  it('#push(replace = true)', function (done) {
+    var router = new Router();
+    var historyLength = window.history.length;
+
+    router.pushRoute({
+      'regexp': new RegExp('^/hari$'),
+      'callback': function () {
+      }
+    });
+    router.push('/hari', true);
+
+    assert.equal(window.history.length, historyLength);
+
+    done();
+  });
+
+  it('#pushRoute(name = "haribol")', function (done) {
+    var router = new Router();
+
+    router.pushRoute({
+      'regexp': new RegExp('^/hari$'),
+      'callback': function () {},
+      'name': 'haribol'
+    });
+    router.eventEmitter.on('route.haribol', function () {
+      done();
+    });
+    router.route('/hari', true);
   });
 });
