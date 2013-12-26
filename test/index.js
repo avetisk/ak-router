@@ -4,7 +4,7 @@
 
 var Router = require('../');
 var assert = require('assert');
-var originalBaseUrl = window.location.origin + window.location.pathname.replace(/\/$/, '');
+var originalBaseUrl = Router.getOrigin() + window.location.pathname.replace(/\/$/, '');
 
 describe('Router', function () {
   beforeEach(function () {
@@ -12,7 +12,7 @@ describe('Router', function () {
   });
 
   it('#push()', function (done) {
-    var baseUrl = window.location.origin + window.location.pathname.replace(/\/$/, '');
+    var baseUrl = Router.getOrigin() + window.location.pathname.replace(/\/$/, '');
     var router = new Router();
 
     router.push('/govinda');
@@ -50,7 +50,7 @@ describe('Router', function () {
   });
 
   it('#pushRoute(), #route()', function (done) {
-    var baseUrl = window.location.origin + window.location.pathname;
+    var baseUrl = Router.getOrigin() + window.location.pathname;
     var router = new Router();
     var counter = {
       '1': 1,
@@ -120,7 +120,11 @@ describe('Router', function () {
       'callback': function () {
         counter += 1;
 
-        if (counter > 5) {
+        if (counter > 6) {
+          throw new Error('Should only emit 6 times.');
+        }
+
+        if (counter === 6) {
           done();
         }
       }
