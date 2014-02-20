@@ -2,7 +2,7 @@
 
 'use strict';
 
-var Router = require('../');
+var Router = process.env.AK_ROUTER_TEST_COVERAGE ? require('../lib-cov/router') : require('../');
 var assert = require('assert');
 var originalBaseUrl = Router.getOrigin() + window.location.pathname.replace(/\/$/, '');
 
