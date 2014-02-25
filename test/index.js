@@ -146,16 +146,12 @@ describe('Router', function () {
     var routeCounter = 0;
     var prerouteCounter = 0;
 
-    router.eventEmitter.on('pre-route', function () {
+    router.on('pre-route', function () {
       prerouteCounter += 1;
     });
 
-    router.eventEmitter.on('route', function () {
+    router.on('route', function () {
       routeCounter += 1;
-
-      if (routeCounter > 1 && prerouteCounter > 1) {
-        done();
-      }
     });
 
     router.pushRoute({
@@ -167,6 +163,12 @@ describe('Router', function () {
     router.route('/govinda/bol');
     router.route('/hari');
     router.route('/hari', false);
+    router.push(originalBaseUrl + '/hari');
+    router.push('/');
+
+    if (routeCounter === 3 && prerouteCounter === 3) {
+      done();
+    }
   });
 
   it('#push(replace = true)', function (done) {
@@ -193,7 +195,7 @@ describe('Router', function () {
       'callback': function () {},
       'name': 'haribol'
     });
-    router.eventEmitter.on('route.haribol', function () {
+    router.on('route.haribol', function () {
       done();
     });
     router.route('/hari', true);

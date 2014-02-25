@@ -1,6 +1,6 @@
 {
   "name": "ak-router",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "client side router",
   "keywords": [
     "router"
@@ -24,7 +24,7 @@
     "node": "~0.10.22"
   },
   "dependencies": {
-    "ak-eventemitter": "~0.0.4"
+    "ak-eventemitter": "~0.0.5"
   },
   "devDependencies": {
     "browserify": "*",
